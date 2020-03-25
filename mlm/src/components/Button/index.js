@@ -2,10 +2,15 @@ import React from "react";
 import "../../assets/css/style.css";
 
 
-function Button() {
+function Button(props) {
     return (
         <div>
-            <a href="/drawing"><button className="drawing-bttn">Go to Drawing!</button></a>
+            <button
+                onClick={props.click}
+                className="drawing-bttn"
+            >
+                {props.text}
+            </button>
         </div>
     )
 }

@@ -14,10 +14,10 @@ class App extends Component {
     return (
       <Router>
         <Navbar
-          title="Magical Learning Moment"
+          title="Magical Learning Moment Drawing"
         ></Navbar>
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={Drawing} />
           <Route exact path="/drawing" component={Drawing} />
         </Switch>
       </Router>
