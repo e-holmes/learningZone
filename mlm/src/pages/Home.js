@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Button from "../components/Button";
+import PageButton from "../components/PageButton";
 import Card from "../components/Card";
 
 
@@ -17,7 +17,7 @@ class Home extends Component {
                 <section id="intoButton">
                     {/* <!-- Store Button --> */}
                     <Card></Card>
-                    <Button></Button>
+                    <PageButton></PageButton>
                 </section>
 
             </div>
