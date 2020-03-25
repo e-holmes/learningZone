@@ -15,8 +15,8 @@ class Drawing extends Component {
         return (
             <div id="body" className="container-fluid">
                 <section id="intoHeader" className="row d-flex justify-content-center">
-                    <h1 className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        {this.props.winner}
+                    <h1 id="win" className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        
                     </h1>
                 </section>
 
