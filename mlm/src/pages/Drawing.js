@@ -3,7 +3,13 @@ import Button from "../components/Button";
 
 class Drawing extends Component {
 
-    // Handles updating component state when the user types into the input field
+    drawAMStudent = () =>{
+        console.log("AM");
+    }
+
+    drawPMStudent = () =>{
+        console.log("PM");
+    }
 
     render() {
         return (
@@ -17,9 +23,11 @@ class Drawing extends Component {
                 <section id="intoButton">
                     {/* <!-- Store Button --> */}
                     <Button
+                        click={this.drawAMStudent}
                         text="AM Drawing"
                     ></Button>
                     <Button
+                         click={this.drawPMStudent}
                         text="PM Drawing"
                     ></Button>
                 </section>
