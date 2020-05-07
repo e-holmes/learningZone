@@ -15,18 +15,25 @@ class Drawing extends Component {
         console.log(data);
         var i;
         let post = "empty";
-        var k = 0;
         for (i = 0; i < 5; i++) {
+            var k= 0;
             var num = (Math.floor(Math.random() * 7));
             console.log(num);
             while (k < data.length - 1) {
-                console.log("While loop: " +k)
-                if (data[i].id === num) {
-                    console.log("id num match on " +k)
-                    k=k+(data.length-1-k);
-                }else{
-                    k++;
-                }
+                    // CONDITIONAL STATEMENTS YOU DOPE
+
+                
+                // switch 
+
+
+                // console.log("While loop: " +k)
+                // if (data[i].id === num) {
+                //     console.log("id num match on " +k)
+                //     k=k+(data.length-1-k);
+                // }else{
+                //     console.log("id no match on " +k)
+                //     k++;
+                // }
             }
             console.log("Roll Dice");
         }
