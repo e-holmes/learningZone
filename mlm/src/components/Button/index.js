@@ -7,7 +7,7 @@ function Button(props) {
         <div>
             <button
                 onClick={props.click}
-                className="drawing-bttn"
+                className={props.class}
             >
                 {props.text}
             </button>
