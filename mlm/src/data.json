@@ -1,0 +1,32 @@
+[
+    {
+      "id": 1,
+      "image": "/assets/imgs/one.png",
+      "clicked": false
+    },
+    {
+      "id": 2,
+      "image": "/assets/imgs/two.png",
+      "clicked": false
+    },
+    {
+      "id": 3,
+      "image": "/assets/imgs/three.png",
+      "clicked": false
+    },
+    {
+      "id": 4,
+      "image": "/assets/imgs/four.png",
+      "clicked": false
+    },
+    {
+      "id": 5,
+      "image": "/assets/imgs/five.png",
+      "clicked": false
+    },
+    {
+      "id": 6,
+      "image": "/assets/imgs/six.png",
+      "clicked": false
+    }
+  ]
