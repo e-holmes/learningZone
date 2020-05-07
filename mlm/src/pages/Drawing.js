@@ -2,9 +2,31 @@ import React, { Component } from "react";
 import Button from "../components/Button";
 
 class Drawing extends Component {
+    state={
+     dice:[]
+    }
 
     drawAMStudent = () =>{
-        console.log("AM");
+        var i;
+        for(i=0; i<5; i++){
+            var num =(Math.floor(Math.random()*7))
+            this.state.dice.push(num);
+        }
+        $("myDice").append(
+            "Dice 1: " 
+            +this.state.dice[0] 
+            +"  Dice 2: "
+            +this.state.dice[1] 
+            +"  Dice 3: "
+            +this.state.dice[2] 
+            +"  Dice 4: "
+            +this.state.dice[3] 
+            +"  Dice 5: "
+            +this.state.dice[4] 
+            
+            )
+        console.log("Roll Dice");
+        console.log(this.state.dice);
     }
 
     drawPMStudent = () =>{
@@ -20,15 +42,19 @@ class Drawing extends Component {
                     </h1>
                 </section>
 
+                <section id="myDice" className="row d-flex justify-content-center">
+
+                </section>
+
                 <section id="intoButton">
                     {/* <!-- Store Button --> */}
                     <Button
                         click={this.drawAMStudent}
-                        text="AM Drawing"
+                        text="Roll Dice"
                     ></Button>
                     <Button
                          click={this.drawPMStudent}
-                        text="PM Drawing"
+                        text="Select Score"
                     ></Button>
                 </section>
 
