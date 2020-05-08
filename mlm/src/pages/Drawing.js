@@ -9,39 +9,56 @@ class Drawing extends Component {
         dice: []
     }
 
-
-    rollDice = (data) => {
-        console.log("Data:");
-        console.log(data);
-        var i;
-        let post = "empty";
-        for (i = 0; i < 5; i++) {
-            var k= 0;
-            var num = (Math.floor(Math.random() * 7));
-            console.log(num);
-            while (k < data.length - 1) {
-                    // CONDITIONAL STATEMENTS YOU DOPE
-
-                
-                // switch 
-
-
-                // console.log("While loop: " +k)
-                // if (data[i].id === num) {
-                //     console.log("id num match on " +k)
-                //     k=k+(data.length-1-k);
-                // }else{
-                //     console.log("id no match on " +k)
-                //     k++;
-                // }
-            }
-            console.log("Roll Dice");
-        }
-
-
-
-        console.log(post);
+    // returns random number
+    rollDice = () => {
+        var num = (Math.floor(Math.random() * 7));
+        // console.log(num);
+        return num;
     }
+
+    // look for matching image
+    findImg = (data, num) => {
+        var k = 0;
+        var result = null;
+        var found;
+        console.log("findImg is running" +result);
+        while (result === null) {
+            found = this.myfunction(data, k, num);
+            console.log("var found in findImg: " +found);
+            found ? result = data[k] : (k = k + 0);
+            k++;
+        }
+        return result;
+    }
+
+    myDice = (data) => {
+        var i=0;
+        var myDice = [];
+        console.log(myDice);
+        while (i<5){
+            var num = this.rollDice();
+            console.log("Num in function myDice: " +num);
+            var found = this.findImg(data, num);
+            found ? (myDice.push(data[i])) : (i=i+0);
+            i++;
+        }
+        // console.log(this.myDice[0]);
+    }
+
+
+
+    myfunction = (data, i, num) => {
+        console.log("myfucntion is running");
+        console.log(i);
+        console.log("data item id: "+data[i].id)
+        var hold = (data[i]);
+        var pic = (hold.id);
+        console.log(pic)
+        console.log("num: "+num);
+        // return true;
+        return ((pic === num) ? true : false);
+    }
+
 
     selectScore = () => {
         console.log("PM");
@@ -69,7 +86,7 @@ class Drawing extends Component {
                 <section id="intoButton">
                     {/* <!-- Store Button --> */}
                     <Button
-                        click={this.rollDice.bind(this, data)}
+                        click={this.myDice.bind(this, data)}
                         text="Roll Dice"
                     ></Button>
                     <Button
