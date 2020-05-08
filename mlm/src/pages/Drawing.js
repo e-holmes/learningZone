@@ -48,12 +48,10 @@ class Drawing extends Component {
 
 
     myfunction = (data, i, num) => {
-        console.log("myfucntion is running");
-        console.log(i);
-        console.log("data item id: "+data[i].id)
+        console.log(data[i].id);
         var hold = (data[i]);
         var pic = (hold.id);
-        console.log(pic)
+        console.log(pic);
         console.log("num: "+num);
         // return true;
         return ((pic === num) ? true : false);
