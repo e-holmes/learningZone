@@ -6,56 +6,58 @@ import data from "../data.json";
 class Drawing extends Component {
     state = {
         data,
-        dice: []
+        dice: data,
+        rolls: 0,
+        maybe: 0,
+        score: 0,
+        one:0,
+        two:0,
+        
     }
 
     // returns random number
     rollDice = () => {
-        var num = (Math.floor(Math.random() * 7));
+        var num = (Math.floor(Math.random() * 7) + 1);
         // console.log(num);
         return num;
     }
-
-    // look for matching image
-    findImg = (data, num) => {
-        var k = 0;
-        var result = null;
-        var found;
-        console.log("findImg is running" +result);
-        while (result === null) {
-            found = this.myfunction(data, k, num);
-            console.log("var found in findImg: " +found);
-            found ? result = data[k] : (k = k + 0);
-            k++;
-        }
-        return result;
-    }
-
+    //  
     myDice = (data) => {
-        var i=0;
+        let k = this.state.rolls;
+        let i = 0;
         var myDice = [];
         console.log(myDice);
-        while (i<5){
-            var num = this.rollDice();
-            console.log("Num in function myDice: " +num);
-            var found = this.findImg(data, num);
-            found ? (myDice.push(data[i])) : (i=i+0);
+        let result = true;
+        while (i < 5) {
+            let num = (Math.floor(Math.random() * 7) + 1);
+            data[0].id === num ? myDice.push(data[0])
+                : data[1].id === num ? myDice.push(data[1])
+                    : data[2].id === num ? myDice.push(data[2])
+                        : data[3].id === num ? myDice.push(data[3])
+                            : data[4].id === num ? myDice.push(data[4])
+                                : data[5].id === num ? myDice.push(data[5])
+                                    : result = false;
+            result ? console.log(myDice) : console.log(result);
+            myDice[i].id = i;
             i++;
         }
-        // console.log(this.myDice[0]);
+
+        // this.updateID(myDice);
+
+        this.setState({
+            dice: myDice,
+            rolls: (k + 1)
+        });
     }
 
-
-
-    myfunction = (data, i, num) => {
-        console.log(data[i].id);
-        var hold = (data[i]);
-        var pic = (hold.id);
-        console.log(pic);
-        console.log("num: "+num);
-        // return true;
-        return ((pic === num) ? true : false);
-    }
+    // updateID = (myDice) => {
+    //     myDice[0].id = 1;
+    //     myDice[1].id = 2;
+    //     myDice[2].id = 3;
+    //     console.log(myDice[0]);
+    //     console.log(myDice[1]);
+    //     console.log(myDice[2]);
+    // }
 
 
     selectScore = () => {
@@ -72,25 +74,61 @@ class Drawing extends Component {
                 </section>
 
                 <section className="row d-flex justify-content-center">
-                    {/* {this.state.data.map(item => (
-                        <Picture
-                            key={item.id}
-                            id={item.id}
-                            image={item.image}
-                        />
-                    ))} */}
+                    <section className="col">
+                        {this.state.dice.map(item => (
+                            <Picture
+                                key={item.id}
+                                id={item.id}
+                                handleClick={this.handleItemClick}
+                                image={item.image}
+                            />
+                        ))}
+                    </section>
+                    <section className="col">
+                        <section className="row">
+                            <h1>Upper Section</h1>
+                            <p>
+                                Ones: {this.state.one}
+                                Twos: {this.state.two}
+                                Threes: {this.state.three}
+                                Fours: {this.state.four}
+                                Five: {this.state.five}
+                                Six: {this.state.six}
+                            </p>
+                        </section>
+                        <section className="row">
+                            <h1>Lower Section</h1>
+                            <p>
+                                Three of a Kind: {this.state.triple}
+                                Four of a Kind: {this.state.double}
+                                Full House: {this.state.house}
+                                Low Straight: {this.state.low}
+                                High Straight: {this.state.high}
+                                Yahtzee: {this.state.yahtzee}
+                                Chance: {this.state.chance}
+                            </p>
+                        </section>
+                    </section>
                 </section>
 
-                <section id="intoButton">
-                    {/* <!-- Store Button --> */}
-                    <Button
-                        click={this.myDice.bind(this, data)}
-                        text="Roll Dice"
-                    ></Button>
-                    <Button
-                        click={this.selectScore}
-                        text="Select Score"
-                    ></Button>
+                <section className="row">
+                    <section className="col">
+                        <h2> Score: {this.state.score} </h2>
+                        <h3> Score: {this.state.maybe}</h3>
+                        <h3> Rolls Used: {this.state.rolls}</h3>
+                    </section>
+
+                    <section className="col" id="intoButton">
+                        {/* <!-- Store Button --> */}
+                        <Button
+                            click={this.myDice.bind(this, data)}
+                            text="Roll Dice"
+                        ></Button>
+                        <Button
+                            click={this.selectScore}
+                            text="Select Score"
+                        ></Button>
+                    </section>
                 </section>
 
             </div>

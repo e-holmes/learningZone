@@ -2,7 +2,9 @@
     {
       "id": 1,
       "image": "/assets/imgs/one.png",
-      "clicked": false
+      "clicked": false,
+      "value": 1
+
     },
     {
       "id": 2,

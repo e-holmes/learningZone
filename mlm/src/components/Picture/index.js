@@ -6,6 +6,7 @@ function Picture(props) {
             <img
                 width="150"
                 height="200"
+                onClick={() => props.handleClick(props.id)}
                 alt={props.alt}
                 src={props.image}
             ></img>
