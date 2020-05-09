@@ -18,43 +18,36 @@ class Drawing extends Component {
 
     // look for matching image
     findImg = (data, num) => {
-        var k = 0;
+        let i = 0;
         var result = null;
-        var found;
         console.log("findImg is running" +result);
+        // while results are empty 
         while (result === null) {
-            found = this.myfunction(data, k, num);
-            console.log("var found in findImg: " +found);
-            found ? result = data[k] : (k = k + 0);
-            k++;
+            var myData = data;
+            console.log(myData);
+            // if found is true push data into result else
+            // (data[i].id === num) ? result = data[i] : (i = i + 0);
+            result = 2;
+            i++;
         }
+        // return picture
+        console.log(result);
         return result;
     }
-
+    //  
     myDice = (data) => {
-        var i=0;
+        let i=0;
         var myDice = [];
         console.log(myDice);
         while (i<5){
             var num = this.rollDice();
             console.log("Num in function myDice: " +num);
             var found = this.findImg(data, num);
+            // if found is true push
             found ? (myDice.push(data[i])) : (i=i+0);
             i++;
         }
         // console.log(this.myDice[0]);
-    }
-
-
-
-    myfunction = (data, i, num) => {
-        console.log(data[i].id);
-        var hold = (data[i]);
-        var pic = (hold.id);
-        console.log(pic);
-        console.log("num: "+num);
-        // return true;
-        return ((pic === num) ? true : false);
     }
 
 
