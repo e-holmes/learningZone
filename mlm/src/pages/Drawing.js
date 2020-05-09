@@ -6,48 +6,36 @@ import data from "../data.json";
 class Drawing extends Component {
     state = {
         data,
-        dice: []
+        dice: data,
     }
 
     // returns random number
     rollDice = () => {
-        var num = (Math.floor(Math.random() * 7));
+        var num = (Math.floor(Math.random() * 7) + 1);
         // console.log(num);
         return num;
     }
-
-    // look for matching image
-    findImg = (data, num) => {
-        let i = 0;
-        var result = null;
-        console.log("findImg is running" +result);
-        // while results are empty 
-        while (result === null) {
-            var myData = data;
-            console.log(myData);
-            // if found is true push data into result else
-            // (data[i].id === num) ? result = data[i] : (i = i + 0);
-            result = 2;
-            i++;
-        }
-        // return picture
-        console.log(result);
-        return result;
-    }
     //  
     myDice = (data) => {
-        let i=0;
+        let i = 0;
         var myDice = [];
         console.log(myDice);
-        while (i<5){
-            var num = this.rollDice();
-            console.log("Num in function myDice: " +num);
-            var found = this.findImg(data, num);
-            // if found is true push
-            found ? (myDice.push(data[i])) : (i=i+0);
+        let result = true;
+        while (i < 5) {
+            let num = (Math.floor(Math.random() * 7) + 1);
+            data[0].id === num ? myDice.push(data[0])
+                : data[1].id === num ? myDice.push(data[1])
+                    : data[2].id === num ? myDice.push(data[2])
+                        : data[3].id === num ? myDice.push(data[3])
+                            : data[4].id === num ? myDice.push(data[4])
+                                : data[5].id === num ? myDice.push(data[5])
+                                    : result = false;
+            result ? console.log(myDice) : console.log(result);
             i++;
         }
-        // console.log(this.myDice[0]);
+        this.setState({
+            dice: myDice
+        });
     }
 
 
@@ -65,13 +53,13 @@ class Drawing extends Component {
                 </section>
 
                 <section className="row d-flex justify-content-center">
-                    {/* {this.state.data.map(item => (
+                    {this.state.dice.map(item => (
                         <Picture
                             key={item.id}
                             id={item.id}
                             image={item.image}
                         />
-                    ))} */}
+                    ))}
                 </section>
 
                 <section id="intoButton">
