@@ -1,33 +1,32 @@
 [
     {
-      "id": 1,
+      "value":1,
       "image": "/assets/imgs/one.png",
-      "clicked": false,
-      "value": 1
+      "clicked": false
 
     },
     {
-      "id": 2,
+      "value": 2,
       "image": "/assets/imgs/two.png",
       "clicked": false
     },
     {
-      "id": 3,
+      "value": 3,
       "image": "/assets/imgs/three.png",
       "clicked": false
     },
     {
-      "id": 4,
+      "value": 4,
       "image": "/assets/imgs/four.png",
       "clicked": false
     },
     {
-      "id": 5,
+      "value": 5,
       "image": "/assets/imgs/five.png",
       "clicked": false
     },
     {
-      "id": 6,
+      "value": 6,
       "image": "/assets/imgs/six.png",
       "clicked": false
     }

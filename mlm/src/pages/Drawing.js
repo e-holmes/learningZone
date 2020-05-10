@@ -6,58 +6,51 @@ import data from "../data.json";
 class Drawing extends Component {
     state = {
         data,
-        dice: data,
+        dice: [],
         rolls: 0,
         maybe: 0,
         score: 0,
-        one:0,
-        two:0,
-        
+        one: 0,
+        two: 0,
+
     }
 
     // returns random number
-    rollDice = () => {
-        var num = (Math.floor(Math.random() * 7) + 1);
-        // console.log(num);
-        return num;
-    }
+
     //  
     myDice = (data) => {
-        let k = this.state.rolls;
+        console.log(data);
+        let rolls = this.state.rolls;
         let i = 0;
         var myDice = [];
+        var x = 5 - myDice.length;
+        console.log(x);
         console.log(myDice);
-        let result = true;
-        while (i < 5) {
-            let num = (Math.floor(Math.random() * 7) + 1);
-            data[0].id === num ? myDice.push(data[0])
-                : data[1].id === num ? myDice.push(data[1])
-                    : data[2].id === num ? myDice.push(data[2])
-                        : data[3].id === num ? myDice.push(data[3])
-                            : data[4].id === num ? myDice.push(data[4])
-                                : data[5].id === num ? myDice.push(data[5])
-                                    : result = false;
-            result ? console.log(myDice) : console.log(result);
-            myDice[i].id = i;
-            i++;
+        let counter = 1;
+        if (rolls < 3) {
+            while (i < x) {
+                let num = (Math.floor(Math.random() * 6) + 1);
+                counter++;
+                i++;
+                for (let e of data) {
+                    if (e.value === num) {
+                        var empty = {};
+                        e.id = counter
+                        myDice.push(Object.assign(empty, e));
+                        break
+                    }
+                }
+            }
+
+            this.setState({
+                dice: myDice,
+                rolls: (rolls + 1)
+            });
+        }else{
+            alert("You have no rolls left!");
         }
-
-        // this.updateID(myDice);
-
-        this.setState({
-            dice: myDice,
-            rolls: (k + 1)
-        });
     }
 
-    // updateID = (myDice) => {
-    //     myDice[0].id = 1;
-    //     myDice[1].id = 2;
-    //     myDice[2].id = 3;
-    //     console.log(myDice[0]);
-    //     console.log(myDice[1]);
-    //     console.log(myDice[2]);
-    // }
 
 
     selectScore = () => {
@@ -84,7 +77,7 @@ class Drawing extends Component {
                             />
                         ))}
                     </section>
-                    <section className="col">
+                    {/* <section className="col">
                         <section className="row">
                             <h1>Upper Section</h1>
                             <p>
@@ -108,7 +101,7 @@ class Drawing extends Component {
                                 Chance: {this.state.chance}
                             </p>
                         </section>
-                    </section>
+                    </section> */}
                 </section>
 
                 <section className="row">
