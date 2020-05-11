@@ -147,7 +147,7 @@ class Drawing extends Component {
 
 
 
-
+    // rest for new game
     reset = () => {
         this.setState({
             dice: [],
@@ -157,9 +157,6 @@ class Drawing extends Component {
             score: 0,
         })
     }
-
-
-
 
 
     selectScore = () => {
