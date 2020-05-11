@@ -1,0 +1,38 @@
+[
+    {
+        "text": "Ones",
+        "score": 0,
+        "entered": false,
+        "value": 1
+    },
+    {
+        "text": "Twoes",
+        "score": 0,
+        "entered": false,
+        "value": 2
+    },
+    {
+        "text": "Threes",
+        "score": 0,
+        "entered": false,
+        "value": 3
+    },
+    {
+        "text": "Fours",
+        "score": 0,
+        "entered": false,
+        "value": 4
+    },
+    {
+        "text": "Fives",
+        "score": 0,
+        "entered": false,
+        "value": 5
+    },
+    {
+        "text": "Sixes",
+        "score": 0,
+        "entered": false,
+        "value": 6
+    }
+]
