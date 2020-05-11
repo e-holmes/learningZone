@@ -10,71 +10,73 @@ class Drawing extends Component {
         counter: 0,
         rolls: 0,
         location: 0,
-        turn:12,
+        turn: 12,
         total: 0,
-        scores:{
-            one:{
-                score:0,
+        scores: [
+            {
+                score: 0,
                 entered: false,
-                value:1
+                value: 1
             },
-            two:{
-                score:0,
+            {
+                score: 0,
                 entered: false,
-                value:2
+                value: 2
             },
-            three:{
-                score:0,
+            {
+                score: 0,
                 entered: false,
-                value:3
+                value: 3
             },
-            four:{
-                score:0,
+            {
+                score: 0,
                 entered: false,
-                value:4
+                value: 4
             },
-            five:{
-                score:0,
+            {
+                score: 0,
                 entered: false,
-                value:5
+                value: 5
             },
-            six:{
-                score:0,
+            {
+                score: 0,
                 entered: false,
-                value:6
+                value: 6
             },
-            tripple:{
-                score:0,
+            {
+                score: 0,
                 entered: false,
-                value:7
+                value: 7
             },
-            double:{
-                score:0,
+            {
+                score: 0,
                 entered: false,
-                value:8
+                value: 8
             },
-            house:{
-                score:0,
+            {
+                score: 0,
                 entered: false,
-                value:9
+                value: 9
             },
-            low:{
-                score:0,
+            {
+                score: 0,
                 entered: false,
-                value:10
+                value: 10
             },
-            high:{
-                score:0,
+            {
+                score: 0,
                 entered: false,
-                value:11
+                value: 11
             },
-            yahtzee:{
-                score:0,
+            {
+                score: 0,
                 entered: false,
-                value:12
-            }
-        }
+                value: 12
+            },
+        ]
     }
+
+
 
     // DICE LOGIC
 
@@ -86,7 +88,7 @@ class Drawing extends Component {
         let myDice = this.checkHold();
         let x = 5 - myDice.length;
         let counter = this.state.counter;
-        if (rolls < 3 && turn>0) {
+        if (rolls < 3 && turn > 0) {
             while (i < x) {
                 let num = (Math.floor(Math.random() * 6) + 1);
                 counter++;
@@ -105,7 +107,7 @@ class Drawing extends Component {
                 rolls: (rolls + 1),
                 counter: counter
             });
-        } else if(rolls===3 && turn<0) {
+        } else if (rolls === 3 && turn < 0) {
             alert("You have no rolls left!");
         } else {
             alert("Game Over! Click restart to play again!")
@@ -130,12 +132,12 @@ class Drawing extends Component {
         let data = this.state.dice;
         for (let e of data) {
             if (e.id === id) {
-                if(e.clicked===false){
-                console.log(e);
-                e.clicked = true;
-                break
-                }else{
-                    e.clicked=false;
+                if (e.clicked === false) {
+                    console.log(e);
+                    e.clicked = true;
+                    break
+                } else {
+                    e.clicked = false;
                     break
                 }
             }
@@ -143,6 +145,29 @@ class Drawing extends Component {
         this.setState({
             dice: data
         });
+    }
+
+    //  cycleScores
+    cycleScores = () => {
+        let loca = this.state.location;
+        let scores = this.state.scores;
+        let box = scores[loca];
+        console.log(loca);
+        console.log(scores);
+        console.log(box);
+        if (box.entered === false) {
+            console.log("cycleScores found where to update");
+        } else if (box.entered === true) {
+            loca++;
+        } else {
+            console.log("Error on finding entered in cycleScores");
+        }
+
+    }
+
+
+    selectScore = () => {
+        console.log("PM");
     }
 
 
@@ -155,13 +180,11 @@ class Drawing extends Component {
             rolls: 0,
             maybe: 0,
             score: 0,
+            turn: 12
         })
     }
 
 
-    selectScore = () => {
-        console.log("PM");
-    }
 
     render() {
         return (
@@ -171,47 +194,47 @@ class Drawing extends Component {
                         <table className="table table-bordered">
                             <thead className="row justify-content-center">
 
-                                <h2>Score Board</h2>
+                                Score Board
 
                             </thead>
                             <tbody>
                                 <tr className="row d-flex justify-content-center">
                                     <td className="col-3"> Ones</td>
-                                    <td className="col-2">{this.state.scores.one.score}</td>
+                                    <td className="col-2">{this.state.scores[0].score}</td>
                                     <td className="col-3">3x</td>
-                                    <td className="col-2">{this.state.scores.tripple.score}</td>
+                                    <td className="col-2">{this.state.scores[6].score}</td>
                                 </tr>
                                 <tr className="row d-flex justify-content-center">
                                     <td className="col-3">Twoes </td>
-                                    <td className="col-2">{this.state.scores.two.score}</td>
+                                    <td className="col-2">{this.state.scores[1].score}</td>
                                     <td className="col-3">Four of a Kind </td>
-                                    <td className="col-2">{this.state.scores.double.score}</td>
+                                    <td className="col-2">{this.state.scores[7].score}</td>
 
                                 </tr>
                                 <tr className="row d-flex justify-content-center">
                                     <td className="col-3">Threes </td>
-                                    <td className="col-2">{this.state.scores.three.score}</td>
+                                    <td className="col-2">{this.state.scores[2].score}</td>
                                     <td className="col-3">Full House </td>
-                                    <td className="col-2">{this.state.scores.house.score}</td>
+                                    <td className="col-2">{this.state.scores[8].score}</td>
                                 </tr>
                                 <tr className="row d-flex justify-content-center">
                                     <td className="col-3">Fours </td>
-                                    <td className="col-2">{this.state.scores.four.score}</td>
+                                    <td className="col-2">{this.state.scores[3].score}</td>
                                     <td className="col-3">Low Straight </td>
-                                    <td className="col-2">{this.state.scores.low.score}</td>
+                                    <td className="col-2">{this.state.scores[9].score}</td>
 
                                 </tr>
                                 <tr className="row d-flex justify-content-center">
                                     <td className="col-3">Fives </td>
-                                    <td className="col-2">{this.state.scores.five.score}</td>
+                                    <td className="col-2">{this.state.scores[4].score}</td>
                                     <td className="col-3">High Straight </td>
-                                    <td className="col-2">{this.state.scores.high.score}</td>
+                                    <td className="col-2">{this.state.scores[10].score}</td>
                                 </tr>
                                 <tr className="row d-flex justify-content-center">
                                     <td className="col-3">Sixes </td>
-                                    <td className="col-2">{this.state.scores.six.score}</td>
+                                    <td className="col-2">{this.state.scores[5].score}</td>
                                     <td className="col-3">Yahtzee </td>
-                                    <td className="col-2">{this.state.scores.yahtzee.score}</td>
+                                    <td className="col-2">{this.state.scores[11].score}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -244,14 +267,14 @@ class Drawing extends Component {
                             text="Roll Dice"
                         ></Button>
                         <Button
-                            click={this.cycleScores()}
+                            click={this.cycleScores}
                             text="Cycle Scores"
                         ></Button>
                         <Button
                             click={this.selectScore}
                             text="Select Score"
                         ></Button>
-                        
+
                         <Button
                             click={this.reset}
                             text="Reset"
