@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import Button from "../components/Button";
 import Picture from "../components/Picture";
 import data from "../data.json";
+import leftScores from "../leftScores.json";
+import rightScores from "../rightScores.json"
+import Tray from "../components/Tray";
 
 class Drawing extends Component {
     state = {
@@ -9,71 +12,11 @@ class Drawing extends Component {
         dice: [],
         counter: 0,
         rolls: 0,
-        location: 0,
         turn: 12,
         total: 0,
-        scores: [
-            {
-                score: 0,
-                entered: false,
-                value: 1
-            },
-            {
-                score: 0,
-                entered: false,
-                value: 2
-            },
-            {
-                score: 0,
-                entered: false,
-                value: 3
-            },
-            {
-                score: 0,
-                entered: false,
-                value: 4
-            },
-            {
-                score: 0,
-                entered: false,
-                value: 5
-            },
-            {
-                score: 0,
-                entered: false,
-                value: 6
-            },
-            {
-                score: 0,
-                entered: false,
-                value: 7
-            },
-            {
-                score: 0,
-                entered: false,
-                value: 8
-            },
-            {
-                score: 0,
-                entered: false,
-                value: 9
-            },
-            {
-                score: 0,
-                entered: false,
-                value: 10
-            },
-            {
-                score: 0,
-                entered: false,
-                value: 11
-            },
-            {
-                score: 0,
-                entered: false,
-                value: 12
-            },
-        ]
+        location: 1,
+        leftScores,
+        rightScores
     }
 
 
@@ -130,6 +73,8 @@ class Drawing extends Component {
     // handleDiceClick updates if nice is saved
     handleDiceClick = id => {
         let data = this.state.dice;
+        let target = id.currentTarget;
+        target.classList.toggle('selected')
         for (let e of data) {
             if (e.id === id) {
                 if (e.clicked === false) {
@@ -147,22 +92,67 @@ class Drawing extends Component {
         });
     }
 
-    //  cycleScores
+    // selected(e) {
+    //     let target = e.currentTarget;
+    //     target.classList.toggle('selected');
+    // }
+
     cycleScores = () => {
         let loca = this.state.location;
-        let scores = this.state.scores;
-        let box = scores[loca];
-        console.log(loca);
-        console.log(scores);
-        console.log(box);
-        if (box.entered === false) {
-            console.log("cycleScores found where to update");
-        } else if (box.entered === true) {
-            loca++;
+        let leftScores = this.state.leftScores;
+        let rightScores = this.state.rightScores;
+        if (loca < 7) {
+            for (let e of leftScores) {
+                if (e.value === loca) {
+                    if (e.entered === false) {
+                        loca = loca + 1;
+                        console.log(loca);
+                        this.setState({
+                            e: this.checkMyDice(e),
+                            location: loca
+                        })
+                        console.log("cycleScores found where to update");
+                        break
+                    } else if (e.entered === true) {
+                        loca = loca + 1;
+                        this.setState({
+                            location: loca
+                        })
+                        console.log("No matching moving to next.");
+                    } else {
+                        console.log("Error on finding entered in leftScores");
+                    }
+                }
+            }
+        } else if (loca > 7) {
+            for (let e of rightScores) {
+                if (e.value === loca) {
+                    if (e.entered === false) {
+                        console.log("Not Programmed Yet");
+                    } else if (e.entered === true) {
+                        console.log("Not Programmed Yet");
+                    } else {
+                        console.log("Error on finding entered in rightScores")
+                    }
+                }
+            }
         } else {
-            console.log("Error on finding entered in cycleScores");
+            console.log("Error finding location for scoring.")
         }
+    }
 
+    checkMyDice = (box) => {
+        let myDice = this.state.dice;
+        let counter = 0;
+        if (box.value < 7) {
+            for (let e of myDice) {
+                if (box.value === e.value) {
+                    counter = counter + e.value;
+                }
+            }
+            box.score = counter;
+            return box;
+        }
     }
 
 
@@ -174,6 +164,7 @@ class Drawing extends Component {
 
     // rest for new game
     reset = () => {
+        this.resetScores();
         this.setState({
             dice: [],
             counter: 0,
@@ -184,104 +175,99 @@ class Drawing extends Component {
         })
     }
 
+    resetScores = () => {
+        let scores = this.state.leftScores;
+        for (let e of scores) {
+            if (e.score > 0) {
+                e.score = 0;
+                this.setState({
+                    e: e
+                })
+            }
+        }
+    }
+
+
 
 
     render() {
         return (
             <div id="body" className="container-fluid">
                 <section className="row d-flex justify-content-center">
-                    <section className="col-8">
-                        <table className="table table-bordered">
-                            <thead className="row justify-content-center">
+                    <section className="col-10">
+                        <section className="row">
 
-                                Score Board
-
-                            </thead>
-                            <tbody>
-                                <tr className="row d-flex justify-content-center">
-                                    <td className="col-3"> Ones</td>
-                                    <td className="col-2">{this.state.scores[0].score}</td>
-                                    <td className="col-3">3x</td>
-                                    <td className="col-2">{this.state.scores[6].score}</td>
-                                </tr>
-                                <tr className="row d-flex justify-content-center">
-                                    <td className="col-3">Twoes </td>
-                                    <td className="col-2">{this.state.scores[1].score}</td>
-                                    <td className="col-3">Four of a Kind </td>
-                                    <td className="col-2">{this.state.scores[7].score}</td>
-
-                                </tr>
-                                <tr className="row d-flex justify-content-center">
-                                    <td className="col-3">Threes </td>
-                                    <td className="col-2">{this.state.scores[2].score}</td>
-                                    <td className="col-3">Full House </td>
-                                    <td className="col-2">{this.state.scores[8].score}</td>
-                                </tr>
-                                <tr className="row d-flex justify-content-center">
-                                    <td className="col-3">Fours </td>
-                                    <td className="col-2">{this.state.scores[3].score}</td>
-                                    <td className="col-3">Low Straight </td>
-                                    <td className="col-2">{this.state.scores[9].score}</td>
-
-                                </tr>
-                                <tr className="row d-flex justify-content-center">
-                                    <td className="col-3">Fives </td>
-                                    <td className="col-2">{this.state.scores[4].score}</td>
-                                    <td className="col-3">High Straight </td>
-                                    <td className="col-2">{this.state.scores[10].score}</td>
-                                </tr>
-                                <tr className="row d-flex justify-content-center">
-                                    <td className="col-3">Sixes </td>
-                                    <td className="col-2">{this.state.scores[5].score}</td>
-                                    <td className="col-3">Yahtzee </td>
-                                    <td className="col-2">{this.state.scores[11].score}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                            <table className="col-5 table">
+                                <thead className="row justify-content-center">
+                                </thead>
+                                <tbody>
+                                    {this.state.leftScores.map(item => (
+                                        <Tray
+                                            key={item.value}
+                                            text={item.text}
+                                            score={item.score}
+                                        />
+                                    ))}
+                                </tbody>
+                            </table>
+                            <table className="col-5 table">
+                                <thead className="row justify-content-center">
+                                </thead>
+                                <tbody>
+                                    {this.state.rightScores.map(item => (
+                                        <Tray
+                                            key={item.value}
+                                            text={item.text}
+                                            score={item.score}
+                                        />
+                                    ))}
+                                </tbody>
+                            </table>
+                        </section>
                     </section>
                 </section>
                 <section className="row">
-                    <section className="col">
-                        {this.state.dice.map(item => (
-                            <Picture
-                                key={item.id}
-                                id={item.id}
-                                handleClick={this.handleDiceClick}
-                                image={item.image}
-                            />
-                        ))}
-                    </section>
+                    {this.state.dice.map(item => (
+                        <Picture
+                            key={item.id}
+                            id={item.id}
+                            handleClick={this.handleDiceClick}
+                            image={item.image}
+                        />
+                    ))}
                 </section>
 
-                <section className="row">
-                    <section className="col">
+
+                <section className="row d-flex justify-content-center">
+                    <section className="col-3">
                         <h2> Score: {this.state.total} </h2>
+                    </section>
+                    <section className="col-3">
                         <h3> Rolls Used: {this.state.rolls}</h3>
                     </section>
                 </section>
-                <section className="row">
-                    <section className="col" id="intoButton">
-                        {/* <!-- Store Button --> */}
-                        <Button
-                            click={this.myDice.bind(this, data)}
-                            text="Roll Dice"
-                        ></Button>
-                        <Button
-                            click={this.cycleScores}
-                            text="Cycle Scores"
-                        ></Button>
-                        <Button
-                            click={this.selectScore}
-                            text="Select Score"
-                        ></Button>
-
-                        <Button
-                            click={this.reset}
-                            text="Reset"
-                        ></Button>
-                    </section>
+                <section className="row d-flex justify-content-center">
+                    {/* <!-- Store Button --> */}
+                    <Button
+                        click={this.myDice.bind(this, data)}
+                        text="Roll Dice"
+                    ></Button>
+                    <section className="col-1"></section>
+                    <Button
+                        click={this.cycleScores}
+                        text="Cycle Scores"
+                    ></Button>
+                    <section className="col-1"></section>
+                    <Button
+                        click={this.selectScore}
+                        text="Select Score"
+                    ></Button>
+                    <section className="col-1"></section>
+                    <Button
+                        click={this.reset}
+                        text="Reset"
+                    ></Button>
                 </section>
-
             </div >
         );
     }
