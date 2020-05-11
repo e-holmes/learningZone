@@ -6,58 +6,157 @@ import data from "../data.json";
 class Drawing extends Component {
     state = {
         data,
-        dice: data,
+        dice: [],
+        counter: 0,
         rolls: 0,
-        maybe: 0,
-        score: 0,
-        one:0,
-        two:0,
-        
-    }
-
-    // returns random number
-    rollDice = () => {
-        var num = (Math.floor(Math.random() * 7) + 1);
-        // console.log(num);
-        return num;
-    }
-    //  
-    myDice = (data) => {
-        let k = this.state.rolls;
-        let i = 0;
-        var myDice = [];
-        console.log(myDice);
-        let result = true;
-        while (i < 5) {
-            let num = (Math.floor(Math.random() * 7) + 1);
-            data[0].id === num ? myDice.push(data[0])
-                : data[1].id === num ? myDice.push(data[1])
-                    : data[2].id === num ? myDice.push(data[2])
-                        : data[3].id === num ? myDice.push(data[3])
-                            : data[4].id === num ? myDice.push(data[4])
-                                : data[5].id === num ? myDice.push(data[5])
-                                    : result = false;
-            result ? console.log(myDice) : console.log(result);
-            myDice[i].id = i;
-            i++;
+        location: 0,
+        turn:12,
+        total: 0,
+        scores:{
+            one:{
+                score:0,
+                entered: false,
+                value:1
+            },
+            two:{
+                score:0,
+                entered: false,
+                value:2
+            },
+            three:{
+                score:0,
+                entered: false,
+                value:3
+            },
+            four:{
+                score:0,
+                entered: false,
+                value:4
+            },
+            five:{
+                score:0,
+                entered: false,
+                value:5
+            },
+            six:{
+                score:0,
+                entered: false,
+                value:6
+            },
+            tripple:{
+                score:0,
+                entered: false,
+                value:7
+            },
+            double:{
+                score:0,
+                entered: false,
+                value:8
+            },
+            house:{
+                score:0,
+                entered: false,
+                value:9
+            },
+            low:{
+                score:0,
+                entered: false,
+                value:10
+            },
+            high:{
+                score:0,
+                entered: false,
+                value:11
+            },
+            yahtzee:{
+                score:0,
+                entered: false,
+                value:12
+            }
         }
+    }
 
-        // this.updateID(myDice);
+    // DICE LOGIC
 
+    // myDice checks turn and roll is approved then rolls dice
+    myDice = (data) => {
+        let turn = this.state.turn;
+        let rolls = this.state.rolls;
+        let i = 0;
+        let myDice = this.checkHold();
+        let x = 5 - myDice.length;
+        let counter = this.state.counter;
+        if (rolls < 3 && turn>0) {
+            while (i < x) {
+                let num = (Math.floor(Math.random() * 6) + 1);
+                counter++;
+                i++;
+                for (let e of data) {
+                    if (e.value === num) {
+                        let empty = {};
+                        e.id = counter
+                        myDice.push(Object.assign(empty, e));
+                        break
+                    }
+                }
+            }
+            this.setState({
+                dice: myDice,
+                rolls: (rolls + 1),
+                counter: counter
+            });
+        } else if(rolls===3 && turn<0) {
+            alert("You have no rolls left!");
+        } else {
+            alert("Game Over! Click restart to play again!")
+        }
+    }
+
+    // checkHold updates dice to keep
+    checkHold = () => {
+        let data = this.state.dice;
+        let hold = [];
+        for (let e of data) {
+            if (e.clicked === true) {
+                hold.push(e);
+            }
+        }
+        return hold;
+
+    }
+
+    // handleDiceClick updates if nice is saved
+    handleDiceClick = id => {
+        let data = this.state.dice;
+        for (let e of data) {
+            if (e.id === id) {
+                if(e.clicked===false){
+                console.log(e);
+                e.clicked = true;
+                break
+                }else{
+                    e.clicked=false;
+                    break
+                }
+            }
+        }
         this.setState({
-            dice: myDice,
-            rolls: (k + 1)
+            dice: data
         });
     }
 
-    // updateID = (myDice) => {
-    //     myDice[0].id = 1;
-    //     myDice[1].id = 2;
-    //     myDice[2].id = 3;
-    //     console.log(myDice[0]);
-    //     console.log(myDice[1]);
-    //     console.log(myDice[2]);
-    // }
+
+
+    // rest for new game
+    reset = () => {
+        this.setState({
+            dice: [],
+            counter: 0,
+            rolls: 0,
+            maybe: 0,
+            score: 0,
+        })
+    }
 
 
     selectScore = () => {
@@ -67,57 +166,77 @@ class Drawing extends Component {
     render() {
         return (
             <div id="body" className="container-fluid">
-                <section id="intoHeader" className="row d-flex justify-content-center">
-                    <h1 id="win" className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                    </h1>
-                </section>
-
                 <section className="row d-flex justify-content-center">
+                    <section className="col-8">
+                        <table className="table table-bordered">
+                            <thead className="row justify-content-center">
+
+                                <h2>Score Board</h2>
+
+                            </thead>
+                            <tbody>
+                                <tr className="row d-flex justify-content-center">
+                                    <td className="col-3"> Ones</td>
+                                    <td className="col-2">{this.state.scores.one.score}</td>
+                                    <td className="col-3">3x</td>
+                                    <td className="col-2">{this.state.scores.tripple.score}</td>
+                                </tr>
+                                <tr className="row d-flex justify-content-center">
+                                    <td className="col-3">Twoes </td>
+                                    <td className="col-2">{this.state.scores.two.score}</td>
+                                    <td className="col-3">Four of a Kind </td>
+                                    <td className="col-2">{this.state.scores.double.score}</td>
+
+                                </tr>
+                                <tr className="row d-flex justify-content-center">
+                                    <td className="col-3">Threes </td>
+                                    <td className="col-2">{this.state.scores.three.score}</td>
+                                    <td className="col-3">Full House </td>
+                                    <td className="col-2">{this.state.scores.house.score}</td>
+                                </tr>
+                                <tr className="row d-flex justify-content-center">
+                                    <td className="col-3">Fours </td>
+                                    <td className="col-2">{this.state.scores.four.score}</td>
+                                    <td className="col-3">Low Straight </td>
+                                    <td className="col-2">{this.state.scores.low.score}</td>
+
+                                </tr>
+                                <tr className="row d-flex justify-content-center">
+                                    <td className="col-3">Fives </td>
+                                    <td className="col-2">{this.state.scores.five.score}</td>
+                                    <td className="col-3">High Straight </td>
+                                    <td className="col-2">{this.state.scores.high.score}</td>
+                                </tr>
+                                <tr className="row d-flex justify-content-center">
+                                    <td className="col-3">Sixes </td>
+                                    <td className="col-2">{this.state.scores.six.score}</td>
+                                    <td className="col-3">Yahtzee </td>
+                                    <td className="col-2">{this.state.scores.yahtzee.score}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </section>
+                <section className="row">
                     <section className="col">
                         {this.state.dice.map(item => (
                             <Picture
                                 key={item.id}
                                 id={item.id}
-                                handleClick={this.handleItemClick}
+                                handleClick={this.handleDiceClick}
                                 image={item.image}
                             />
                         ))}
-                    </section>
-                    <section className="col">
-                        <section className="row">
-                            <h1>Upper Section</h1>
-                            <p>
-                                Ones: {this.state.one}
-                                Twos: {this.state.two}
-                                Threes: {this.state.three}
-                                Fours: {this.state.four}
-                                Five: {this.state.five}
-                                Six: {this.state.six}
-                            </p>
-                        </section>
-                        <section className="row">
-                            <h1>Lower Section</h1>
-                            <p>
-                                Three of a Kind: {this.state.triple}
-                                Four of a Kind: {this.state.double}
-                                Full House: {this.state.house}
-                                Low Straight: {this.state.low}
-                                High Straight: {this.state.high}
-                                Yahtzee: {this.state.yahtzee}
-                                Chance: {this.state.chance}
-                            </p>
-                        </section>
                     </section>
                 </section>
 
                 <section className="row">
                     <section className="col">
-                        <h2> Score: {this.state.score} </h2>
-                        <h3> Score: {this.state.maybe}</h3>
+                        <h2> Score: {this.state.total} </h2>
                         <h3> Rolls Used: {this.state.rolls}</h3>
                     </section>
-
+                </section>
+                <section className="row">
                     <section className="col" id="intoButton">
                         {/* <!-- Store Button --> */}
                         <Button
@@ -125,13 +244,22 @@ class Drawing extends Component {
                             text="Roll Dice"
                         ></Button>
                         <Button
+                            click={this.cycleScores()}
+                            text="Cycle Scores"
+                        ></Button>
+                        <Button
                             click={this.selectScore}
                             text="Select Score"
+                        ></Button>
+                        
+                        <Button
+                            click={this.reset}
+                            text="Reset"
                         ></Button>
                     </section>
                 </section>
 
-            </div>
+            </div >
         );
     }
 }
