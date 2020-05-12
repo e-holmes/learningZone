@@ -50,7 +50,7 @@ class Drawing extends Component {
                 rolls: (rolls + 1),
                 counter: counter
             });
-        } else if (rolls === 3 && turn < 0) {
+        } else if (rolls === 3 && turn > 0) {
             alert("You have no rolls left!");
         } else {
             alert("Game Over! Click restart to play again!")
@@ -70,7 +70,7 @@ class Drawing extends Component {
 
     }
 
-    // handleDiceClick updates if nice is saved
+    // handleDiceClick updates if dice is saved
     handleDiceClick = id => {
         let data = this.state.dice;
         for (let e of data) {
@@ -78,11 +78,11 @@ class Drawing extends Component {
                 if (e.clicked === false) {
                     console.log(e);
                     e.clicked = true;
-                    e.class ="col-2 border";
+                    e.class = "col-2 border";
                     break
                 } else {
                     e.clicked = false;
-                    e.class ="col-2";
+                    e.class = "col-2";
                     break
                 }
             }
@@ -92,23 +92,28 @@ class Drawing extends Component {
         });
     }
 
+
+    // SCORING SECTION
+
+    // cycleScores goes through and temporarily updates score.
     cycleScores = () => {
         let loca = this.state.location;
         let leftScores = this.state.leftScores;
         let rightScores = this.state.rightScores;
+        this.checkClear();
         if (loca < 7) {
-            for (let e of leftScores) {
-                if (e.value === loca) {
-                    if (e.entered === false) {
+            for (let l of leftScores) {
+                if (l.value === loca) {
+                    if (l.entered === false) {
                         loca = loca + 1;
                         console.log(loca);
                         this.setState({
-                            e: this.checkMyDice(e),
+                            l: this.checkMyDice(l),
                             location: loca
                         })
                         console.log("cycleScores found where to update");
                         break
-                    } else if (e.entered === true) {
+                    } else if (l.entered === true) {
                         loca = loca + 1;
                         this.setState({
                             location: loca
@@ -119,26 +124,40 @@ class Drawing extends Component {
                     }
                 }
             }
-        } else if (loca > 7) {
-            for (let e of rightScores) {
-                if (e.value === loca) {
-                    if (e.entered === false) {
-                        console.log("Not Programmed Yet");
-                    } else if (e.entered === true) {
-                        console.log("Not Programmed Yet");
+        } else if (loca > 6) {
+            for (let r of rightScores) {
+                if (r.value === loca) {
+                    if (r.entered === false) {
+                        loca = loca + 1;
+                        console.log(loca);
+                        this.setState({
+                            r: this.checkMyDice(r),
+                            location: loca
+                        })
+                        console.log("cycleScores found where to update");
+                        break
+                    } else if (r.entered === true) {
+                        loca = loca + 1;
+                        this.setState({
+                            location: loca
+                        })
+                        console.log("No matching moving to next.");
                     } else {
-                        console.log("Error on finding entered in rightScores")
+                        console.log("Error on finding entered in leftScores");
                     }
                 }
             }
-        } else {
+        }
+        else {
             console.log("Error finding location for scoring.")
         }
     }
 
+    // checkMyDice checks dice and gets score for current location
     checkMyDice = (box) => {
         let myDice = this.state.dice;
         let counter = 0;
+        // Handles all right side score locations
         if (box.value < 7) {
             for (let e of myDice) {
                 if (box.value === e.value) {
@@ -147,12 +166,233 @@ class Drawing extends Component {
             }
             box.score = counter;
             return box;
+            // Handles all left side score locations
+        } else if (box.value > 6) {
+            // Handles 3x
+            if (box.value === 7) {
+                let transfer = this.checkMostMatches(myDice, counter);
+                let length = transfer.array.length;
+                if (length > 2) {
+                    box.score = transfer.counter
+                    return box;
+                } else {
+                    box.score = 0;
+                    return box;
+                }
+                // Handles 4x
+            } else if (box.value === 8) {
+                let transfer = this.checkMostMatches(myDice, counter);
+                let length = transfer.array.length;
+                if (length > 3) {
+                    box.score = transfer.counter
+                    return box;
+                } else {
+                    box.score = 0;
+                    return box;
+                }
+                // Handles Yahtzee
+            } else if (box.value === 12) {
+                let transfer = this.checkMostMatches(myDice, counter);
+                let length = transfer.array.length;
+                if (length > 4) {
+                    box.score = transfer.counter
+                    return box;
+                } else {
+                    box.score = 0;
+                    return box;
+                }
+                // Handles Full House
+            } else if (box.value === 9) {
+                let tripple = this.checkMostMatches(myDice, counter);
+                let length = tripple.array.length;
+                if (length === 3) {
+                    tripple = this.checkLeastMatches(myDice);
+                    length = tripple.length;
+                    if (length === 2) {
+                        box.score = 25;
+                    } else {
+                        box.score = 0;
+                    }
+                } else {
+                    box.score = 0;
+                    return box;
+                }
+                // Handles Low Straight
+            } else if (box.value === 10) {
+                counter = this.lowStraight(myDice);
+                box.score = counter;
+                return box;
+                // Handles High Straight
+            } else if (box.value === 11) {
+                counter = this.highStraight(myDice);
+                box.score = counter;
+                return box;
+            }
         }
     }
 
 
-    selectScore = () => {
-        console.log("PM");
+    // Checks for Low Straight
+    lowStraight = (myDice) => {
+        let values = [];
+        for (let e of myDice) {
+            values.push(e.value);
+        };
+        values.sort();
+        let uniqueSet = new Set(values);
+        values = [...uniqueSet];
+        if (values.length > 4) {
+            if (values[0] < (values[1] - 1)) {
+                values.splice(0, 1);
+            } else if (values[4] > (values[3] + 1)) {
+                values.splice(4, 1);
+            } else {
+                values.splice(0, 1);
+            }
+        }
+        let lowOne = [1, 2, 3, 4];
+        let lowTwo = [2, 3, 4, 5];
+        let lowThree = [3, 4, 5, 6];
+        if (JSON.stringify(values) === JSON.stringify(lowOne) || JSON.stringify(values) === JSON.stringify(lowTwo) || JSON.stringify(values) === JSON.stringify(lowThree)) {
+            console.log("lowStraight found");
+            return 30;
+        } else {
+            return 0;
+        }
+    }
+
+    // Checks for High Straight
+    highStraight = (myDice) => {
+        let values = [];
+        for (let e of myDice) {
+            values.push(e.value);
+            values.sort();
+        }
+        let highOne = [1, 2, 3, 4, 5];
+        let highTwo = [2, 3, 4, 5, 6];
+        if (JSON.stringify(values) === JSON.stringify(highOne) || JSON.stringify(values) === JSON.stringify(highTwo)) {
+            return 40;
+        } else {
+            return 0;
+        }
+    }
+
+    // Compares dice to find most matches
+    checkMostMatches = (myDice, counter) => {
+        let values = [];
+        let oldArray = [];
+        let save;
+        for (let e of myDice) {
+            values.push(e.value);
+            console.log("Values: " + values);
+        }
+        for (let hold of myDice) {
+            console.log("Checking for multiples of " + hold.value);
+            let newArray = (values.filter(el => el === hold.value));
+            if (newArray.length > 0) {
+                if (newArray.length > oldArray.length) {
+                    oldArray = newArray;
+                    save = hold.value;
+                } else if (newArray.length === oldArray.length) {
+                    if (hold.value > save) {
+                        oldArray = newArray;
+                        save = hold.value;
+                    }
+                }
+            }
+        }
+        counter = (save * (oldArray.length));
+        let transfer = {
+            array: oldArray,
+            value: save,
+            counter: counter
+        }
+        return transfer
+    }
+
+    // Compares matches for smallest match
+    checkLeastMatches = (myDice) => {
+        let values = [];
+        console.log(values.length)
+        let oldArray = [0, 0, 0];
+        for (let e of myDice) {
+            values.push(e.value);
+            console.log("Values: " + values);
+        }
+        for (let hold of myDice) {
+            let newArray = (values.filter(el => el === hold.value));
+            if (newArray.length < oldArray.length) {
+                oldArray = newArray;
+            }
+        }
+        return oldArray
+    }
+
+    // checks to clear score
+    checkClear = () => {
+        let leftScores = this.state.leftScores;
+        let rightScores = this.state.rightScores;
+        let loca = this.state.location;
+        for (let w of leftScores) {
+            if (w.score >= 0 && w.entered === false) {
+                w.score = 0;
+                this.setState({
+                    w: w
+                })
+            }
+        }
+        for (let w of rightScores) {
+            if (w.score >= 0 && w.entered === false) {
+                w.score = 0;
+                this.setState({
+                    w: w
+                })
+            }
+        }
+        if (loca >= 13) {
+            loca = 1;
+            this.setState({
+                location: loca
+            })
+        }
+    }
+
+    // Saves the score
+    setScore = () => {
+        let loca = this.state.location;
+        let leftScores = this.state.leftScores;
+        let rightScores = this.state.rightScores;
+        let turn = this.state.turn;
+
+        if (loca<7){
+            for (let e of leftScores){
+                if (e.value === loca){
+                    e.entered = true;
+                    turn = turn -1;
+                    this.setState({
+                        location: 1,
+                        e: e,
+                        rolls: 0,
+                        turn: turn,
+                        dice:[]
+                    })
+                }
+            }
+        } else if (loca > 6 && loca < 13){
+            for (let e of rightScores){
+                if (e.value === loca){
+                    e.entered = true;
+                    turn = turn -1;
+                    this.setState({
+                        location: 1,
+                        e: e,
+                        rolls: 0,
+                        turn: turn,
+                        dice:[]
+                    })
+                }
+            }
+        }
     }
 
 
@@ -255,7 +495,7 @@ class Drawing extends Component {
                     ></Button>
                     <section className="col-1"></section>
                     <Button
-                        click={this.selectScore}
+                        click={this.setScore}
                         text="Select Score"
                     ></Button>
                     <section className="col-1"></section>
