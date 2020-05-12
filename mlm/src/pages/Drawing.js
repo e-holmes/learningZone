@@ -73,16 +73,16 @@ class Drawing extends Component {
     // handleDiceClick updates if nice is saved
     handleDiceClick = id => {
         let data = this.state.dice;
-        let target = id.currentTarget;
-        target.classList.toggle('selected')
         for (let e of data) {
             if (e.id === id) {
                 if (e.clicked === false) {
                     console.log(e);
                     e.clicked = true;
+                    e.class ="col-2 border";
                     break
                 } else {
                     e.clicked = false;
+                    e.class ="col-2";
                     break
                 }
             }
@@ -91,11 +91,6 @@ class Drawing extends Component {
             dice: data
         });
     }
-
-    // selected(e) {
-    //     let target = e.currentTarget;
-    //     target.classList.toggle('selected');
-    // }
 
     cycleScores = () => {
         let loca = this.state.location;
@@ -229,6 +224,7 @@ class Drawing extends Component {
                 <section className="row">
                     {this.state.dice.map(item => (
                         <Picture
+                            class={item.class}
                             key={item.id}
                             id={item.id}
                             handleClick={this.handleDiceClick}
