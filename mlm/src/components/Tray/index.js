@@ -6,7 +6,7 @@ function Tray(props) {
     return (
         <tr className="row d-flex justify-content-center">
             <td className="col-3">{props.text}</td>
-            <td className="col-2">{props.score}</td>
+            <td className={props.class}>{props.score}</td>
         </tr>
     )
 }
