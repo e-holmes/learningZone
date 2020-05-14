@@ -107,7 +107,7 @@ class Drawing extends Component {
                     if (l.entered === false) {
                         loca = loca + 1;
                         console.log(loca);
-                        l.class="col-2 text-danger";
+                        l.class = "col-2 text-danger";
                         this.setState({
                             l: this.checkMyDice(l),
                             location: loca
@@ -131,7 +131,7 @@ class Drawing extends Component {
                     if (r.entered === false) {
                         loca = loca + 1;
                         console.log(loca);
-                        r.class="col-2 text-danger";
+                        r.class = "col-2 text-danger";
                         this.setState({
                             r: this.checkMyDice(r),
                             location: loca
@@ -338,7 +338,7 @@ class Drawing extends Component {
         for (let w of leftScores) {
             if (w.score >= 0 && w.entered === false) {
                 w.score = 0;
-                w.class="col-2";
+                w.class = "col-2";
                 this.setState({
                     w: w
                 })
@@ -347,7 +347,7 @@ class Drawing extends Component {
         for (let w of rightScores) {
             if (w.score >= 0 && w.entered === false) {
                 w.score = 0;
-                w.class="col-2";
+                w.class = "col-2";
                 this.setState({
                     w: w
                 })
@@ -364,43 +364,43 @@ class Drawing extends Component {
     // Saves the score
     setScore = () => {
         let loca = this.state.location;
-        loca=loca-1;
+        loca = loca - 1;
         let leftScores = this.state.leftScores;
         let rightScores = this.state.rightScores;
         let turn = this.state.turn;
 
-        if (loca<7){
-            for (let e of leftScores){
-                if (e.value === loca){
+        if (loca < 7) {
+            for (let e of leftScores) {
+                if (e.value === loca) {
                     e.entered = true;
                     e.class = "col-2";
-                    let total=this.state.total;
+                    let total = this.state.total;
                     total = total + e.score;
-                    turn = turn -1;
+                    turn = turn - 1;
                     this.setState({
                         location: 1,
                         e: e,
                         rolls: 0,
                         turn: turn,
-                        dice:[],
+                        dice: [],
                         total: total
                     })
                 }
             }
-        } else if (loca > 6 && loca < 14){
-            for (let e of rightScores){
-                if (e.value === loca){
+        } else if (loca > 6 && loca < 14) {
+            for (let e of rightScores) {
+                if (e.value === loca) {
                     e.entered = true;
                     e.class = "col-2";
-                    let total=this.state.total;
+                    let total = this.state.total;
                     total = total + e.score;
-                    turn = turn -1;
+                    turn = turn - 1;
                     this.setState({
                         location: 1,
                         e: e,
                         rolls: 0,
                         turn: turn,
-                        dice:[],
+                        dice: [],
                         total: total
                     })
                 }
@@ -419,13 +419,25 @@ class Drawing extends Component {
             rolls: 0,
             maybe: 0,
             score: 0,
-            turn: 12
+            turn: 12,
+            total: 0
         })
     }
 
     resetScores = () => {
-        let scores = this.state.leftScores;
-        for (let e of scores) {
+        let leftScores = this.state.leftScores;
+        let rightScores = this.state.rightScores;
+
+        for (let e of leftScores) {
+            if (e.score > 0) {
+                e.score = 0;
+                e.entered = false;
+                this.setState({
+                    e: e
+                })
+            }
+        }
+        for (let e of rightScores) {
             if (e.score > 0) {
                 e.score = 0;
                 e.entered = false;
